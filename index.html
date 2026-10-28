@@ -120,11 +120,44 @@ function escapeJump(){if(escape.running&&escape.jump===0){escape.vy=-440;escape.
 function escapeSlide(){if(escape.running)escape.slide=.65;}
 function spawnEscapeItem(){var types=['cig','smoke','infected','lung','barrier','cig','smoke'];escape.items.push({lane:Math.floor(Math.random()*3),y:-45,type:types[Math.floor(Math.random()*types.length)],hit:false});}
 function escapeFrame(now){if(!escape.running)return;var c=document.getElementById('escapeCanvas'),x=c.getContext('2d'),dt=Math.min(.035,(now-escape.last)/1000||0);escape.last=now;escape.elapsed+=dt;escape.frame++;escape.speed=190+Math.min(270,escape.elapsed*4.5);escape.score=Math.floor(escape.elapsed*10)+escape.lungs*25;escape.y+=escape.vy*dt;escape.vy+=1100*dt;if(escape.y>=0){escape.y=0;escape.vy=0;escape.jump=0;}escape.slide=Math.max(0,escape.slide-dt);escape.spawn-=dt;if(escape.spawn<=0){spawnEscapeItem();escape.spawn=Math.max(.4,1.05-escape.elapsed*.009)+Math.random()*.2;}
-var W=c.width,H=c.height,g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#153d52');g.addColorStop(.55,'#0d3544');g.addColorStop(1,'#061b28');x.fillStyle=g;x.fillRect(0,0,W,H);for(var q=0;q<22;q++){x.fillStyle='rgba(150,240,221,.15)';x.beginPath();x.arc((q*71+escape.frame*.25)%W,(q*113+escape.frame*.7)%H,1+q%3,0,7);x.fill();}
-var hz=95;x.fillStyle='#092633';x.beginPath();x.moveTo(25,hz);x.lineTo(W-25,hz);x.lineTo(W+35,H);x.lineTo(-35,H);x.fill();x.strokeStyle='rgba(93,237,188,.3)';for(var l=0;l<4;l++){var lx=25+(W-50)*l/3;x.beginPath();x.moveTo(W/2+(lx-W/2)*.12,hz);x.lineTo(lx,H);x.stroke();}var prog=(escape.frame*escape.speed*.012)%70;for(var z=0;z<9;z++){var yy=hz+((z*70+prog)%445),sc=(yy-hz)/(H-hz);x.strokeStyle='rgba(119,221,205,'+(.06+sc*.18)+')';x.beginPath();x.moveTo(28-sc*30,yy);x.lineTo(W-28+sc*30,yy);x.stroke();}
-var lanes=[W*.27,W*.5,W*.73],py=H-84+escape.y;escape.items.forEach(function(it){it.y+=escape.speed*dt;var xx=lanes[it.lane],ps=Math.max(.35,Math.min(1.5,.45+it.y/500)),sz=26*ps;x.save();x.translate(xx,it.y);x.scale(ps,ps);if(it.type==='cig'){x.fillStyle='#eee7d8';x.fillRect(-18,-6,30,12);x.fillStyle='#ff805d';x.fillRect(12,-6,6,12);x.font='16px sans-serif';x.fillText('💨',-12,-17);}else if(it.type==='smoke'){x.font='34px sans-serif';x.fillText('💨',-17,12);}else if(it.type==='infected'){x.shadowColor='#ff4d72';x.shadowBlur=16;x.font='30px sans-serif';x.fillText('🦠',-16,10);x.font='22px sans-serif';x.fillText('🫁',-12,-15);}else if(it.type==='lung'){x.shadowColor='#49ffb2';x.shadowBlur=18;x.font='32px sans-serif';x.fillText('🫁',-17,10);x.strokeStyle='#7dffc1';x.beginPath();x.arc(0,0,24,0,7);x.stroke();}else{x.fillStyle='#ff9c65';x.shadowColor='#ff6d51';x.shadowBlur=14;x.beginPath();x.roundRect(-22,-19,44,38,7);x.fill();x.fillStyle='#612d32';x.fillRect(-15,-12,30,5);x.fillRect(-15,2,30,5);x.font='17px sans-serif';x.fillText('⚠️',-9,-24);}x.restore();
+var W=c.width,H=c.height;
+var sky=x.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#9edaf7');sky.addColorStop(.48,'#e2f6ff');sky.addColorStop(1,'#b5dfbd');x.fillStyle=sky;x.fillRect(0,0,W,H);
+// Park-side scenery and trees make the environment read as an outdoor running track.
+x.fillStyle='#77bd78';x.fillRect(0,155,W,H-155);
+for(var tr=0;tr<7;tr++){var tx=((tr*73-escape.frame*.22)%(W+90)+W+90)%(W+90)-25,ty=115+(tr%3)*15;x.fillStyle='#8a6042';x.fillRect(tx-4,ty+8,8,43);x.fillStyle=tr%2?'#32875c':'#409966';x.beginPath();x.arc(tx,ty,20,0,7);x.arc(tx-12,ty+8,14,0,7);x.arc(tx+12,ty+9,14,0,7);x.fill();}
+var hz=112;
+// Grass verges and pale concrete sidewalks sit outside a clearly defined asphalt road.
+x.fillStyle='#69b56f';x.beginPath();x.moveTo(0,hz);x.lineTo(W,hz);x.lineTo(W,H);x.lineTo(0,H);x.fill();
+x.fillStyle='#d5d9d7';x.beginPath();x.moveTo(W*.36,hz);x.lineTo(W*.64,hz);x.lineTo(W+20,H);x.lineTo(-20,H);x.fill();
+x.fillStyle='#454d55';x.beginPath();x.moveTo(W*.385,hz);x.lineTo(W*.615,hz);x.lineTo(W+5,H);x.lineTo(-5,H);x.fill();
+// Road edges and dashed centre lane markers use perspective so the road is instantly recognisable.
+x.strokeStyle='#ffffff';x.lineWidth=2;x.beginPath();x.moveTo(W*.385,hz);x.lineTo(-5,H);x.moveTo(W*.615,hz);x.lineTo(W+5,H);x.stroke();
+var prog=(escape.frame*escape.speed*.014)%82;for(var z=0;z<8;z++){var yy=hz+((z*82+prog)%450),sc=(yy-hz)/(H-hz),ww=1+sc*3,hh=5+sc*17;x.fillStyle='#f7f1ce';x.fillRect(W/2-ww/2,yy,ww,hh);}
+var lanes=[W*.31,W*.5,W*.69],py=H-92+escape.y;escape.items.forEach(function(it){it.y+=escape.speed*dt;var xx=lanes[it.lane],ps=Math.max(.35,Math.min(1.5,.45+it.y/500)),sz=26*ps;x.save();x.translate(xx,it.y);x.scale(ps,ps);if(it.type==='cig'){x.fillStyle='#eee7d8';x.fillRect(-18,-6,30,12);x.fillStyle='#ff805d';x.fillRect(12,-6,6,12);x.font='16px sans-serif';x.fillText('💨',-12,-17);}else if(it.type==='smoke'){x.font='34px sans-serif';x.fillText('💨',-17,12);}else if(it.type==='infected'){x.shadowColor='#ff4d72';x.shadowBlur=16;x.font='30px sans-serif';x.fillText('🦠',-16,10);x.font='22px sans-serif';x.fillText('🫁',-12,-15);}else if(it.type==='lung'){x.shadowColor='#49ffb2';x.shadowBlur=18;x.font='32px sans-serif';x.fillText('🫁',-17,10);x.strokeStyle='#7dffc1';x.beginPath();x.arc(0,0,24,0,7);x.stroke();}else{x.fillStyle='#ff9c65';x.shadowColor='#ff6d51';x.shadowBlur=14;x.beginPath();x.roundRect(-22,-19,44,38,7);x.fill();x.fillStyle='#612d32';x.fillRect(-15,-12,30,5);x.fillRect(-15,2,30,5);x.font='17px sans-serif';x.fillText('⚠️',-9,-24);}x.restore();
 if(!it.hit&&Math.abs(it.y-py)<sz+20&&it.lane===escape.lane){if(it.type==='lung'){it.hit=true;escape.lungs++;gameSound('bonus');}else if(it.type==='infected'||it.type==='cig'||it.type==='barrier'){if(escape.y>-25){it.hit=true;escape.over=true;escape.running=false;}}else if(it.type==='smoke'){if(escape.slide>0)it.hit=true;else if(escape.y>-25){it.hit=true;escape.over=true;escape.running=false;}}}});
-escape.items=escape.items.filter(function(it){return it.y<H+60&&!it.hit;});x.save();x.translate(lanes[escape.lane],py);if(escape.slide>0)x.scale(1.18,.55);x.shadowColor='#46ffb1';x.shadowBlur=22;x.fillStyle='#39e9a1';x.beginPath();x.ellipse(0,8,17,23,0,0,7);x.fill();x.shadowBlur=0;x.fillStyle='#073b36';x.beginPath();x.arc(0,-17,13,0,7);x.fill();x.fillStyle='#e6fff5';x.beginPath();x.arc(-4,-19,2,0,7);x.arc(4,-19,2,0,7);x.fill();x.strokeStyle='#eafff5';x.lineWidth=3;x.beginPath();x.moveTo(-7,27);x.lineTo(-12,35);x.moveTo(7,27);x.lineTo(12,35);x.stroke();x.restore();
+escape.items=escape.items.filter(function(it){return it.y<H+60&&!it.hit;});// Draw a recognisable human runner with a bobbing head, torso, swinging arms and legs.
+x.save();x.translate(lanes[escape.lane],py);
+var run=Math.sin(escape.elapsed*13),stride=Math.cos(escape.elapsed*13),jumping=escape.y<0;
+if(escape.slide>0){x.translate(0,17);x.rotate(-.22);x.scale(1.18,.62);}
+x.globalAlpha=.18;x.fillStyle='#14252b';x.beginPath();x.ellipse(0,39,22,6,0,0,7);x.fill();x.globalAlpha=1;
+// legs and bright running shoes
+x.lineCap='round';x.lineJoin='round';x.strokeStyle='#263b59';x.lineWidth=8;
+x.beginPath();x.moveTo(-5,17);x.lineTo(-8+stride*9,30);x.lineTo(-12+stride*15,37);x.stroke();
+x.beginPath();x.moveTo(5,17);x.lineTo(8-stride*9,30);x.lineTo(12-stride*15,37);x.stroke();
+x.strokeStyle='#f7fbff';x.lineWidth=5;x.beginPath();x.moveTo(-12+stride*15,37);x.lineTo(-5+stride*15,37);x.moveTo(12-stride*15,37);x.lineTo(19-stride*15,37);x.stroke();
+// arms, skin and green athletic shirt
+x.strokeStyle='#d99569';x.lineWidth=7;x.beginPath();x.moveTo(-10,-10);x.lineTo(-18-run*5,0+run*5);x.lineTo(-15-run*8,9+run*5);x.stroke();
+x.beginPath();x.moveTo(10,-10);x.lineTo(18+run*5,0-run*5);x.lineTo(15+run*8,9-run*5);x.stroke();
+x.fillStyle='#11a96a';x.beginPath();x.moveTo(-10,-15);x.lineTo(10,-15);x.lineTo(13,12);x.lineTo(-13,12);x.closePath();x.fill();
+x.fillStyle='#087a50';x.fillRect(-3,-13,6,21);
+// neck and face
+x.fillStyle='#d99569';x.fillRect(-4,-21,8,8);x.beginPath();x.arc(0,-29,11,0,7);x.fill();
+// hair and face details
+x.fillStyle='#27313a';x.beginPath();x.arc(0,-32,11,Math.PI,Math.PI*2);x.lineTo(10,-29);x.lineTo(5,-35);x.lineTo(-7,-35);x.closePath();x.fill();
+x.fillStyle='#26333b';x.beginPath();x.arc(4,-29,1.2,0,7);x.fill();
+x.strokeStyle='#9b5e43';x.lineWidth=1.5;x.beginPath();x.moveTo(1,-24);x.lineTo(4,-24);x.stroke();
+if(jumping){x.fillStyle='rgba(255,255,255,.28)';x.beginPath();x.ellipse(0,41,25,5,0,0,7);x.fill();}
+x.restore();
 document.getElementById('escapeScore').textContent=escape.score;document.getElementById('escapeTime').textContent=Math.floor(escape.elapsed)+'s';document.getElementById('escapeLungs').textContent=escape.lungs;
 if(escape.over){var ov=document.getElementById('escapeOverlay');ov.classList.remove('hidden');ov.innerHTML='<div class="escape-big">🫁</div><strong class="escape-end">Run over!</strong><p>Score: '+escape.score+' · Healthy lungs: '+escape.lungs+'<br>Survived '+Math.floor(escape.elapsed)+' seconds.</p><button class="action-main" data-action="escapeStart">↻ Run again</button>';bindEvents();return;}escape.raf=requestAnimationFrame(escapeFrame);}
 
