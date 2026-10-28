@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Each signed-in user can access only their own private app backup.
+    match /users/{userId}/private/{documentId} {
+      allow read, write: if request.auth != null
+                         && request.auth.uid == userId
+                         && documentId == "appData";
+    }
+    // Deny all other reads and writes by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
