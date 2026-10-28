@@ -1,14 +1,14 @@
 /*
- * Go Healthy Firebase configuration.
- * Replace the placeholder values with the Web App config from Firebase Console.
- * These client config values identify your Firebase project; Firestore Security Rules
- * (firestore.rules) must be deployed before enabling real user data.
+ * Go Healthy Firebase web configuration.
+ * Firestore access is protected by firestore.rules; never add service-account
+ * credentials or private Admin SDK keys to this client-side file.
  */
 window.GO_HEALTHY_FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDMUOUsJc5tbL4wxnMGCdxdhuHfANyT1sM",
+  authDomain: "go-healthy-b6dcb.firebaseapp.com",
+  projectId: "go-healthy-b6dcb",
+  storageBucket: "go-healthy-b6dcb.firebasestorage.app",
+  messagingSenderId: "571314159971",
+  appId: "1:571314159971:web:c34c6f408540e65fc3d356",
+  measurementId: "G-2YMVKVWG9J"
 };
