@@ -21,3 +21,14 @@ Backups are stored under `users/{Firebase Auth UID}/private/appData`. Firestore 
 
 ## Smart reminders limitation
 Pattern-based reminders use the most common logged smoking hour and browser notifications while the app is active. Reliable notifications while the Android app is fully closed require a native Android scheduling/notification implementation and permission handling; the current web logic does not promise background delivery.
+
+
+## Admin portal for Help to Quit content
+
+- Portal URL: https://rohitfcg123-arch.github.io/Go-healthy-/admin.html
+- Firebase Console → Authentication → Sign-in method: enable **Google**.
+- Firebase Console → Authentication → Settings → Authorized domains: ensure `rohitfcg123-arch.github.io` is listed.
+- Publish the updated `firestore.rules` from this repository in Firebase Console → Firestore Database → Rules. This is essential: the portal checks the approved Google email in the UI, and Firestore rules enforce the restriction on the server.
+- Approved admin: `rohit.fcg@gmail.com`; the Google account must have a verified email.
+- Admin can edit the Help to Quit heading/intro and add, remove, or reorder YouTube links. The app reads saved content from `siteContent/helpToQuit`; the public app can read this document but only the approved admin can write it.
+- GitHub Pages serves the portal file, but Firebase Authentication provider/domain settings and Firestore rules must still be enabled/published once in Firebase Console. GitHub commits do not publish those Firebase Console settings automatically.
