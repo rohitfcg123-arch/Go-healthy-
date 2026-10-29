@@ -1,11 +1,22 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Each signed-in user can access only their own private app backup.
+    // Users can read/write only their own app backup.
     match /users/{userId}/private/{documentId} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == userId
-                         && documentId == "appData";
+      allow read: if documentId == "appData" && request.auth != null
+        && (request.auth.uid == userId
+          || (request.auth.token.email == "rohit.fcg123@gmail.com"
+            && request.auth.token.email_verified == true));
+      allow write: if documentId == "appData" && request.auth != null
+        && request.auth.uid == userId;
+    }
+
+    // Admin-only collection-group read for synced user records.
+    // The portal uses this to list registered accounts and their synced smoking logs.
+    match /{path=**}/private/{documentId} {
+      allow read: if request.auth != null
+        && request.auth.token.email == "rohit.fcg123@gmail.com"
+        && request.auth.token.email_verified == true;
     }
 
     // Public app can read Help to Quit content; only the verified admin can edit it.
