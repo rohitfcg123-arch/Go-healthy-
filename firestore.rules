@@ -7,6 +7,16 @@ service cloud.firestore {
                          && request.auth.uid == userId
                          && documentId == "appData";
     }
+
+    // Public app can read Help to Quit content; only the verified admin can edit it.
+    match /siteContent/{documentId} {
+      allow read: if documentId == "helpToQuit";
+      allow create, update, delete: if documentId == "helpToQuit"
+        && request.auth != null
+        && request.auth.token.email == "rohit.fcg@gmail.com"
+        && request.auth.token.email_verified == true;
+    }
+
     // Deny all other reads and writes by default.
     match /{document=**} {
       allow read, write: if false;
