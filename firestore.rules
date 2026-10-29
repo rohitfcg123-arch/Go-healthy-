@@ -13,7 +13,7 @@ service cloud.firestore {
       allow read: if documentId == "helpToQuit";
       allow create, update, delete: if documentId == "helpToQuit"
         && request.auth != null
-        && request.auth.token.email == "rohit.fcg@gmail.com"
+        && request.auth.token.email == "Rohit.fcg123@gmail.com"
         && request.auth.token.email_verified == true;
     }
 
