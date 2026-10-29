@@ -27,9 +27,58 @@
 .pop-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;background:#053f32c9;backdrop-filter:blur(5px);z-index:8}.pop-overlay .big{font-size:42px}.pop-overlay strong{font-size:20px;margin:7px 0}.pop-overlay p{font-size:12px;line-height:1.5;color:#d7f6e6;max-width:240px;margin:0 0 12px}.pop-controls{display:flex;gap:8px;margin-top:12px}.pop-controls button{flex:1}.pop-hint{font-size:10px;color:#c6f2dd;text-align:center;margin:10px 0 0}
 
 .game-card.is-expanded{position:relative;z-index:2;border-color:#b6e8cd;box-shadow:0 12px 35px #0b5a3218}.game-card.is-expanded .game-collapse{display:block}.game-collapse{display:none}.game-expandbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.game-expandbar button{font-size:12px}.game-fullscreen:fullscreen,.game-fullscreen.is-expanded{overflow:auto;background:#f5fbf7;padding:14px;box-sizing:border-box}.game-fullscreen.is-expanded{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-height:100dvh!important;z-index:99999!important;border-radius:0!important;margin:0!important;overflow:auto!important}.game-fullscreen:fullscreen .content{max-width:760px;margin:auto}.game-fullscreen:fullscreen .pop-arena{height:min(58vh,560px)}.game-fullscreen:fullscreen .breathe-orb-wrap{height:min(34vh,300px)}.game-fullscreen:fullscreen .breathe-orb{width:clamp(150px,30vw,230px);height:clamp(150px,30vw,230px)}.sound-toggle{border:1px solid #ffffff44!important;background:#ffffff18!important;color:#fff!important;border-radius:999px;padding:8px 10px;font-size:11px}.game-expandbar .sound-toggle{color:#08794c!important;background:#e9f9ef!important;border-color:#d1efdf!important}.game-open-hint{font-size:11px;color:var(--muted);margin:-4px 0 12px}.escape-panel{background:#071a26;border-radius:24px;padding:12px;color:#fff;overflow:hidden;box-shadow:0 18px 45px #061a2a35}.escape-head{display:flex;justify-content:space-between;align-items:center;padding:5px 4px 12px}.escape-head h3{margin:0;font-size:17px}.escape-pill{border-radius:99px;background:#15394a;color:#72f3b2;padding:7px 10px;font-size:10px;font-weight:800}.escape-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}.escape-stat{background:#102c3b;border:1px solid #2a4c5c;border-radius:13px;padding:8px;text-align:center}.escape-stat small{display:block;color:#9eb9c8;font-size:9px}.escape-stat strong{display:block;font-size:18px;margin-top:3px}.escape-canvas-wrap{position:relative;border-radius:18px;overflow:hidden;border:1px solid #315463;background:#0a2634}.escape-canvas{display:block;width:100%;height:auto;aspect-ratio:360/540;touch-action:none}.escape-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;background:linear-gradient(180deg,#041b25b8,#04151fef);gap:9px}.escape-overlay .escape-big{font-size:54px}.escape-overlay strong{font-size:22px}.escape-overlay p{font-size:12px;line-height:1.5;color:#c0d9e2;max-width:270px;margin:0}.escape-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.escape-controls button{padding:12px 2px;border-radius:13px;background:#123747;border:1px solid #31596a;color:#fff;font-size:12px;font-weight:800;touch-action:manipulation}.escape-help{font-size:10px;color:#9eb9c8;line-height:1.5;text-align:center;margin:10px 3px 2px}.escape-end{color:#ffd58b!important}
+
+/* App download welcome modal */
+.app-download-overlay{position:fixed;inset:0;z-index:100000;background:rgba(4,27,20,.72);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:1;visibility:visible;transition:opacity .2s ease}
+.app-download-overlay.gh-hidden{display:none}
+.app-download-modal{width:min(100%,440px);max-height:min(92dvh,820px);overflow:auto;background:#fff;border:1px solid #dcece3;border-radius:26px;box-shadow:0 24px 80px #001c1266;color:#12221e;position:relative}
+.app-download-art{padding:24px 22px 20px;background:radial-gradient(circle at 85% 12%,#ffffff25 0 50px,transparent 51px),linear-gradient(135deg,#073f32,#0b8059);color:#fff;border-radius:25px 25px 0 0}
+.app-download-close{position:absolute;right:13px;top:13px;width:36px;height:36px;border:1px solid #ffffff55;background:#ffffff20;color:#fff;border-radius:50%;font-size:23px;line-height:1}
+.app-download-leaf{font-size:34px;margin-bottom:10px}
+.app-download-art h2{font-size:25px;line-height:1.12;letter-spacing:-.7px;margin:0 42px 8px 0}
+.app-download-art p{font-size:12px;line-height:1.5;color:#d8f4e6;margin:0}
+.app-download-body{padding:18px 20px 20px}
+.app-download-btn{width:100%;display:flex;justify-content:center;align-items:center;gap:9px;text-decoration:none;border:0;border-radius:15px;background:linear-gradient(100deg,#34e49c,#18c880);color:#063f2e;font-weight:850;padding:15px 13px;font-size:15px;box-shadow:0 8px 20px #13ad6d25}
+.app-download-size{text-align:center;font-size:10px;color:#71807b;margin:8px 0 16px}
+.app-install-title{font-size:14px;font-weight:850;margin:0 0 10px}
+.app-install-steps{list-style:none;counter-reset:inst;margin:0;padding:0;display:grid;gap:10px}
+.app-install-steps li{counter-increment:inst;display:grid;grid-template-columns:27px 1fr;gap:9px;align-items:start;font-size:12px;line-height:1.45;color:#4d6258}
+.app-install-steps li:before{content:counter(inst);width:26px;height:26px;border-radius:9px;background:#e5faee;color:#08794c;font-weight:850;display:grid;place-items:center;font-size:11px}
+.app-install-steps strong{color:#17392b}
+.app-download-later{display:block;margin:13px auto 0;padding:10px 14px;border:0;background:transparent;color:#65766d;font-size:12px;font-weight:750}
+.app-download-note{margin-top:12px;border:1px solid #f2e3c7;background:#fff9ed;color:#7b6444;border-radius:12px;padding:10px 11px;font-size:10px;line-height:1.5}
+@media(min-width:561px){.app-download-overlay{padding:24px}.app-download-modal{border-radius:28px}}
+
 </style>
 </head>
 <body>
+
+<div class="app-download-overlay" id="appDownloadOverlay" role="dialog" aria-modal="true" aria-labelledby="appDownloadTitle">
+  <section class="app-download-modal">
+    <div class="app-download-art">
+      <button class="app-download-close" id="appDownloadClose" type="button" aria-label="Close download popup">×</button>
+      <div class="app-download-leaf" aria-hidden="true">🌿</div>
+      <h2 id="appDownloadTitle">Get Go Healthy on your phone</h2>
+      <p>Your smoke-free journey, progress and motivation — right on your Android phone.</p>
+    </div>
+    <div class="app-download-body">
+      <a class="app-download-btn" id="appDownloadButton" href="https://github.com/rohitfcg123-arch/Go-healthy-/releases/download/v1.0.0/app-debug.apk">
+        <span aria-hidden="true">⬇</span> Download Android App (APK)
+      </a>
+      <p class="app-download-size">Android APK · approximately 3.2 MB · Free</p>
+      <h3 class="app-install-title">How to install</h3>
+      <ol class="app-install-steps">
+        <li><span><strong>Download:</strong> Tap the green button above and wait for the APK download to finish.</span></li>
+        <li><span><strong>Open the file:</strong> Tap the download notification, or open Chrome → Downloads and select <strong>app-debug.apk</strong>.</span></li>
+        <li><span><strong>Allow installation if asked:</strong> Choose Settings and enable <strong>Allow from this source</strong> for Chrome or your file manager, then return to the installer.</span></li>
+        <li><span><strong>Install:</strong> Tap Install, wait for it to finish, then tap Open.</span></li>
+      </ol>
+      <div class="app-download-note">Android may show a security warning because the app is being installed outside Google Play. Install only if you trust this app. If an update cannot install over an older version, uninstalling the old version may delete its local data.</div>
+      <button class="app-download-later" id="appDownloadLater" type="button">Continue to website instead</button>
+    </div>
+  </section>
+</div>
+
 <div class="app" id="app"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -220,5 +269,22 @@ loadHelpContent();
 render();
 })();
 </script>
+
+<script>
+(function(){
+  var overlay=document.getElementById('appDownloadOverlay');
+  if(!overlay)return;
+  function closeDownloadPopup(){overlay.classList.add('gh-hidden');try{sessionStorage.setItem('goHealthyDownloadPopupDismissed','1');}catch(e){}}
+  var dismissed=false;try{dismissed=sessionStorage.getItem('goHealthyDownloadPopupDismissed')==='1';}catch(e){}
+  if(dismissed)overlay.classList.add('gh-hidden');
+  var close=document.getElementById('appDownloadClose');
+  var later=document.getElementById('appDownloadLater');
+  if(close)close.addEventListener('click',closeDownloadPopup);
+  if(later)later.addEventListener('click',closeDownloadPopup);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)closeDownloadPopup();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!overlay.classList.contains('gh-hidden'))closeDownloadPopup();});
+})();
+</script>
+
 </body>
 </html>
