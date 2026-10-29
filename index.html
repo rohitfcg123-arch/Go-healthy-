@@ -28,6 +28,13 @@
 
 .game-card.is-expanded{position:relative;z-index:2;border-color:#b6e8cd;box-shadow:0 12px 35px #0b5a3218}.game-card.is-expanded .game-collapse{display:block}.game-collapse{display:none}.game-expandbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.game-expandbar button{font-size:12px}.game-fullscreen:fullscreen,.game-fullscreen.is-expanded{overflow:auto;background:#f5fbf7;padding:14px;box-sizing:border-box}.game-fullscreen.is-expanded{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-height:100dvh!important;z-index:99999!important;border-radius:0!important;margin:0!important;overflow:auto!important}.game-fullscreen:fullscreen .content{max-width:760px;margin:auto}.game-fullscreen:fullscreen .pop-arena{height:min(58vh,560px)}.game-fullscreen:fullscreen .breathe-orb-wrap{height:min(34vh,300px)}.game-fullscreen:fullscreen .breathe-orb{width:clamp(150px,30vw,230px);height:clamp(150px,30vw,230px)}.sound-toggle{border:1px solid #ffffff44!important;background:#ffffff18!important;color:#fff!important;border-radius:999px;padding:8px 10px;font-size:11px}.game-expandbar .sound-toggle{color:#08794c!important;background:#e9f9ef!important;border-color:#d1efdf!important}.game-open-hint{font-size:11px;color:var(--muted);margin:-4px 0 12px}.escape-panel{background:#071a26;border-radius:24px;padding:12px;color:#fff;overflow:hidden;box-shadow:0 18px 45px #061a2a35}.escape-head{display:flex;justify-content:space-between;align-items:center;padding:5px 4px 12px}.escape-head h3{margin:0;font-size:17px}.escape-pill{border-radius:99px;background:#15394a;color:#72f3b2;padding:7px 10px;font-size:10px;font-weight:800}.escape-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}.escape-stat{background:#102c3b;border:1px solid #2a4c5c;border-radius:13px;padding:8px;text-align:center}.escape-stat small{display:block;color:#9eb9c8;font-size:9px}.escape-stat strong{display:block;font-size:18px;margin-top:3px}.escape-canvas-wrap{position:relative;border-radius:18px;overflow:hidden;border:1px solid #315463;background:#0a2634}.escape-canvas{display:block;width:100%;height:auto;aspect-ratio:360/540;touch-action:none}.escape-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;background:linear-gradient(180deg,#041b25b8,#04151fef);gap:9px}.escape-overlay .escape-big{font-size:54px}.escape-overlay strong{font-size:22px}.escape-overlay p{font-size:12px;line-height:1.5;color:#c0d9e2;max-width:270px;margin:0}.escape-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.escape-controls button{padding:12px 2px;border-radius:13px;background:#123747;border:1px solid #31596a;color:#fff;font-size:12px;font-weight:800;touch-action:manipulation}.escape-help{font-size:10px;color:#9eb9c8;line-height:1.5;text-align:center;margin:10px 3px 2px}.escape-end{color:#ffd58b!important}
 
+
+/* Persistent app download strip */
+.app-download-strip{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;background:#073f32;color:#fff;box-shadow:0 4px 14px #062f241c}
+.app-download-strip-copy{font-size:11px;line-height:1.3;font-weight:750;min-width:0}
+.app-download-strip-copy small{display:block;color:#c9efdc;font-size:10px;font-weight:500;margin-top:2px}
+.app-download-strip-btn{flex-shrink:0;border:0;border-radius:999px;background:#34e49c;color:#063f2e;padding:9px 12px;font-size:11px;font-weight:850}
+
 /* App download welcome modal */
 .app-download-overlay{position:fixed;inset:0;z-index:100000;background:rgba(4,27,20,.72);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:1;visibility:visible;transition:opacity .2s ease}
 .app-download-overlay.gh-hidden{display:none}
@@ -77,6 +84,11 @@
       <button class="app-download-later" id="appDownloadLater" type="button">Continue to website instead</button>
     </div>
   </section>
+</div>
+
+<div class="app-download-strip" role="region" aria-label="Download Go Healthy app">
+  <div class="app-download-strip-copy">🌿 Go Healthy App<small>Free Android download</small></div>
+  <button class="app-download-strip-btn" id="appDownloadTopButton" type="button">⬇ Download App</button>
 </div>
 
 <div class="app" id="app"></div>
@@ -274,6 +286,8 @@ render();
 (function(){
   var overlay=document.getElementById('appDownloadOverlay');
   if(!overlay)return;
+  var topButton=document.getElementById('appDownloadTopButton');
+  if(topButton)topButton.addEventListener('click',function(){overlay.classList.remove('gh-hidden');});
   function closeDownloadPopup(){overlay.classList.add('gh-hidden');try{sessionStorage.setItem('goHealthyDownloadPopupDismissed','1');}catch(e){}}
   var dismissed=false;try{dismissed=sessionStorage.getItem('goHealthyDownloadPopupDismissed')==='1';}catch(e){}
   if(dismissed)overlay.classList.add('gh-hidden');
