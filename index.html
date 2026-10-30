@@ -61,6 +61,19 @@
 @media(min-width:561px){.app-download-overlay{padding:24px}.app-download-modal{border-radius:28px}}
 
 </style>
+<script>
+(function(){
+  var offlinePath='/Go-healthy-/offline.html';
+  function goOffline(){if(location.pathname.endsWith('/offline.html'))return;try{sessionStorage.setItem('goHealthyOfflineReturn',location.href);}catch(e){}location.replace(offlinePath);}
+  window.addEventListener('offline',goOffline);
+  if(!navigator.onLine){goOffline();return;}
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('/Go-healthy-/sw.js').catch(function(e){console.warn('Offline support registration failed',e);});
+    });
+  }
+})();
+</script>
 </head>
 <body>
 
