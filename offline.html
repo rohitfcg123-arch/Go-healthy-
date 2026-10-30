@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#073f32"><title>You're Offline · Go Healthy</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(160deg,#f2faf5,#e7f4ec);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#17372b;display:flex;align-items:center;justify-content:center;padding:20px}.wrap{width:min(520px,100%);text-align:center}.mark{width:64px;height:64px;margin:0 auto 14px;border-radius:21px;background:#d5f6e3;display:grid;place-items:center;font-size:34px}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#138455;font-weight:850}h1{font-size:30px;letter-spacing:-1px;margin:8px 0}p{color:#64776d;font-size:14px;line-height:1.55;margin:8px auto 18px}.status{display:inline-flex;align-items:center;gap:8px;border-radius:99px;padding:8px 13px;background:#fff0ed;color:#b64c43;font-size:12px;font-weight:800}.dot{width:8px;height:8px;border-radius:50%;background:#e46a5d}.actions{display:flex;gap:10px;margin:18px 0 24px}.actions button{flex:1;border:0;border-radius:14px;padding:14px 10px;font-weight:850;font-size:13px}.retry{background:#12b875;color:#063f2e}.home{background:#fff;color:#315246;border:1px solid #dce9e0!important}.game{background:#fff;border:1px solid #dce9e0;border-radius:22px;padding:15px;box-shadow:0 12px 32px #153e2b0d;text-align:left}.gamehead{display:flex;justify-content:space-between;align-items:center}.gamehead strong{font-size:14px}.score{font-size:12px;color:#60756a;font-weight:800}canvas{display:block;width:100%;height:145px;background:#f5fbf7;border-radius:14px;margin:12px 0 8px;touch-action:manipulation}.gamehint{text-align:center;font-size:11px;color:#718078;margin:0}.gamebuttons{display:flex;gap:8px;margin-top:10px}.gamebuttons button{flex:1;border:1px solid #dce9e0;background:#f7fbf8;border-radius:11px;padding:10px;font-size:12px;font-weight:800;color:#315246}.foot{font-size:10px;color:#8a9990;margin-top:16px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="mark">🌿</div><div class="eyebrow">Go Healthy</div>
+  <h1>You're offline</h1>
+  <p>Internet connection nahi mil raha. Connection wapas aate hi Try Again dabao. Tab tak ek chhota game khelo!</p>
+  <div class="status"><span class="dot"></span><span id="connection">No internet connection</span></div>
+  <div class="actions"><button class="retry" id="retry">↻ Try Again</button><button class="home" id="home">Go to Home</button></div>
+  <section class="game">
+    <div class="gamehead"><strong>🦖 Offline Run</strong><span class="score">Score: <span id="score">0</span> · Best: <span id="best">0</span></span></div>
+    <canvas id="game" width="480" height="145" aria-label="Offline dinosaur running game"></canvas>
+    <p class="gamehint" id="hint">Tap the game or press SPACE to jump over the cactus.</p>
+    <div class="gamebuttons"><button id="start">▶ Start / Restart</button><button id="jump">⬆ Jump</button></div>
+  </section>
+  <div class="foot">Your Go Healthy data stays on this device. Reconnect to continue.</div>
+</main>
+<script>
+(function(){
+ var base='/Go-healthy-/',canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),scoreEl=document.getElementById('score'),bestEl=document.getElementById('best'),hint=document.getElementById('hint');
+ var dpr=Math.min(window.devicePixelRatio||1,2),W=480,H=145,ground=116,running=false,over=false,score=0,best=0,speed=4,frame=0,player={x:48,y:ground-30,w:22,h:30,vy:0},obstacles=[];
+ try{best=Number(localStorage.getItem('ghOfflineDinoBest')||0)}catch(e){}bestEl.textContent=best;
+ function resize(){var rect=canvas.getBoundingClientRect();canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);ctx.setTransform(canvas.width/W,0,0,canvas.height/H,0,0);draw()}
+ function start(){score=0;speed=4;frame=0;obstacles=[];player.y=ground-player.h;player.vy=0;running=true;over=false;hint.textContent='Run! Tap or press SPACE to jump.';loop()}
+ function jump(){if(!running){if(over||!running)start();return}if(player.y>=ground-player.h-1)player.vy=-10.8}
+ function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#f5fbf7';ctx.fillRect(0,0,W,H);ctx.fillStyle='#b8d9c5';ctx.fillRect(0,ground,W,2);
+ ctx.fillStyle='#91b6a0';for(var i=0;i<12;i++){var x=(i*53-(frame*speed*.6)%53);ctx.fillRect(x,ground+10,18,2)}
+ // tiny pixel dinosaur
+ ctx.fillStyle='#176b4b';var px=player.x,py=player.y;ctx.fillRect(px+5,py+8,15,18);ctx.fillRect(px+13,py,12,14);ctx.fillRect(px+21,py+7,7,5);ctx.fillRect(px+7,py+24,5,6);ctx.fillRect(px+17,py+24,5,6);ctx.fillStyle='#fff';ctx.fillRect(px+20,py+4,3,3);
+ ctx.fillStyle='#278d5d';obstacles.forEach(function(o){ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillRect(o.x-5,o.y+9,6,5);ctx.fillRect(o.x+o.w-1,o.y+15,6,5)});
+ if(!running){ctx.fillStyle='#315b48';ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.fillText(over?'Game over! Tap Start to play again':'Ready? Tap Start to play',W/2,48)}
+ }
+ function loop(){if(!running)return;frame++;score+=1;speed=Math.min(9,4+score/450);if(frame%76===0)obstacles.push({x:W+10,w:12+Math.random()*8,h:20+Math.random()*13,y:ground-(20+Math.random()*13)});player.vy+=.55;player.y+=player.vy;if(player.y>ground-player.h){player.y=ground-player.h;player.vy=0}
+ obstacles.forEach(function(o){o.x-=speed});obstacles=obstacles.filter(function(o){return o.x>-30});
+ var hit=obstacles.some(function(o){return pxHit(player,o)});scoreEl.textContent=Math.floor(score/5);
+ if(hit){running=false;over=true;var s=Math.floor(score/5);if(s>best){best=s;bestEl.textContent=best;try{localStorage.setItem('ghOfflineDinoBest',String(best))}catch(e){}}hint.textContent='Game over. Score: '+s+'. Tap Start to try again.';draw();return}
+ draw();requestAnimationFrame(loop)}
+ function pxHit(p,o){return p.x+ p.w-3>o.x+2&&p.x+3<o.x+o.w-2&&p.y+p.h-3>o.y+2}
+ document.getElementById('start').addEventListener('click',start);document.getElementById('jump').addEventListener('click',jump);canvas.addEventListener('pointerdown',jump);document.addEventListener('keydown',function(e){if(e.code==='Space'||e.code==='ArrowUp'){e.preventDefault();jump()}});
+ function retry(){if(navigator.onLine){document.getElementById('connection').textContent='Connection found — opening Go Healthy…';location.href=base}else{document.getElementById('connection').textContent='Still no internet connection';hint.textContent='Internet is still unavailable. Keep playing while you wait.'}}
+ document.getElementById('retry').addEventListener('click',retry);document.getElementById('home').addEventListener('click',retry);
+ window.addEventListener('online',function(){document.getElementById('connection').textContent='Internet connected — returning…';setTimeout(function(){location.href=base},500)});
+ resize();window.addEventListener('resize',resize);
+})();
+</script>
+</body></html>
